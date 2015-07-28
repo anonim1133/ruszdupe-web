@@ -14,5 +14,7 @@ services:
         class:  TrainingSourceBundle\Service\getEndomondoDetails
     getStravaDetails:
         class:  TrainingSourceBundle\Service\getStravaDetails
+        arguments:
+            AccessToken: %strava_secret%
     getRunKeeperDetails:
         class:  TrainingSourceBundle\Service\getRunKeeperDetails

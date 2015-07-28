@@ -30,7 +30,10 @@ class IndexController extends Controller
     public function testAction(){
     
         $training_details = $this->get('getTrainingDetails');
-	$training_details->setUrl('https://www.endomondo.com/workouts/546810831/10959221');
+	//$training_details->setUrl('https://www.endomondo.com/users/10391720/workouts/343135237');
+	$training_details->setUrl('http://www.strava.com/activities/56519726');
+	
+	
 	
 	dump($training_details->get());
 	
