@@ -19,7 +19,7 @@ class getStravaDetails{
     
     private function api_url($url){
 	$url = explode('/', $url);
-	if(count($url) == 4)
+	if(count($url) == 5)
 	    return 'https://www.strava.com/api/v3/activities/' . $url[4] . '?access_token='.$this->_token;
 	else
 	    throw new \Exception('Unrecognised url format.');

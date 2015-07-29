@@ -55,8 +55,8 @@ class getTrainingDetails{
 	    $this->_training['heart_rate_avg'] = $training->average_heartrate;
 	    $this->_training['heart_rate_max'] = $training->max_heartrate;
 	    
-	}elseif(preg_match('/endo/', $url)){
-	    $this->_training = $this->_runkeeper->get($this->_url);
+	//}elseif(preg_match('/endo/', $url)){
+	//    $this->_training = $this->_runkeeper->get($this->_url);
 	}else{
 	    throw new Exception('Unrecognized url');
 	}
