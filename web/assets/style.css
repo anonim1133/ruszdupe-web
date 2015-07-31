@@ -111,6 +111,13 @@ body {
 	margin-top: 11px;
 }
 
+#add_date_btn{
+    float: right;
+    transform: scale(0.9);
+    position: relative;
+    top: 10px;
+}
+
 .sukces{
 	width: 128px;  
 	margin-right: auto; 
@@ -178,7 +185,7 @@ img#loading{
 form[name=wykopbundle_training] input,
 form[name=wykopbundle_training] select#wykopbundle_training_idCity,
 form[name=wykopbundle_training] select#wykopbundle_training_idTag{
-    width: 100%;
+    width: 80%;
 }
 
 form[name=wykopbundle_training] input,

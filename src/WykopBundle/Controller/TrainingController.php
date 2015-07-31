@@ -52,6 +52,8 @@ class TrainingController extends Controller
 	$distances = $entity->getDistance();
 	
         if ($form->isValid()) {
+	    dump($entity);
+	    
 	    $training = new Training();
 	    $training->setTag($entity->getTag());
 	    $training->setCity($entity->getCity());
@@ -60,7 +62,7 @@ class TrainingController extends Controller
 	    $training_details_provider = $this->get('getTrainingDetails');
 
 	    //Deal with multiple trainings in one form
-	    foreach($distances as $dist){
+	    foreach($distances as $index => $dist){
 		$distance = new Distance();
 		
 		//Send distance to @getTrainingDetails - retrvie details
@@ -72,23 +74,26 @@ class TrainingController extends Controller
 		}
 		
 		$distance->setDistance($training_details['distance']);
-		if(isset($training_details['start_time']))
+		
+		if(isset($training_details['start_time'])){
 		    $distance->setStartDate($training_details['start_time']);
-		else{
-		    //$distance->setStartDate($entity->getDateAdd());
+		}elseif(isset($entity->getDates()[$index])){
+		    $distance->setStartDate($entity->getDates()[$index]);
+		}else{
 		    $distance->setStartDate(new DateTime('now'));
 		}
 		
-		if(isset($training_details['start_time']))
+		if(isset($training_details['duration'])){
 		    $distance->setDuration($training_details['duration']);
-		
-		if(isset($training_details['duration']))
-		    $distance->setAvgSpeed($training_details['speed_avg']);
+		}
 		
 		if(isset($training_details['speed_avg']))
-		    $distance->setCalories($training_details['calories']);
+		    $distance->setAvgSpeed($training_details['speed_avg']);
 		
 		if(isset($training_details['calories']))
+		    $distance->setCalories($training_details['calories']);
+		
+		if(isset($training_details['training']))
 		    $distance->setDetails($training_details['training']);
 	
 		$em->persist($distance);

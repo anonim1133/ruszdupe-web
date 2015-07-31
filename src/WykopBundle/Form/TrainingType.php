@@ -39,11 +39,11 @@ class TrainingType extends AbstractType
 		'required' => true,
 		'label' => false
 		))
-	    ->add('date', 'collection', array(
+	    ->add('dates', 'collection', array(
 		'type' => 'datetime',
 		'allow_add' => true,
 		'prototype' => true,
-		'mapped' => false,
+		'mapped' => true,
 		'label' => false
 	    ))
 	    ->add('details', 'textarea', array(

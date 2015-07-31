@@ -67,6 +67,11 @@ class Training
      */
     private $details;
     
+    /**
+     * @var \DateTime
+     */
+    private $dates;
+    
     public function __construct(){
 	$date = new \DateTime();
 	$minutes = $date->format('i');
@@ -81,6 +86,7 @@ class Training
 	$this->date_add = new \DateTime();
 	
 	$this->distance = new ArrayCollection();
+	$this->dates = new ArrayCollection();
     }
     
     /**
@@ -229,5 +235,28 @@ class Training
     public function getDetails()
     {
         return $this->details;
+    }
+    
+    /**
+     * Add date
+     *
+     * @param \DateTime $date
+     * @return Training
+     */
+    public function setDates($date)
+    {
+        $this->dates->add($date);
+
+        return $this;
+    }
+
+    /**
+     * Get dates
+     *
+     * @return Array
+     */
+    public function getDates()
+    {
+        return $this->dates;
     }
 }
