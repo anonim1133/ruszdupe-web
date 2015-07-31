@@ -105,6 +105,12 @@ body {
 	text-transform: uppercase;
 }
 
+#add_distance_btn{
+	float: left;
+	margin-bottom: 14px;
+	margin-top: 11px;
+}
+
 .sukces{
 	width: 128px;  
 	margin-right: auto; 
@@ -192,4 +198,8 @@ form[name=wykopbundle_training] textarea{
     width: 100%;
     min-height: 128px;
     box-sizing: border-box;
+}
+
+div#wykopbundle_training_distance label{
+    display:none;
 }

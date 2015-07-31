@@ -10,7 +10,6 @@
                 <th>Idtag</th>
                 <th>Idcity</th>
                 <th>Nameuser</th>
-                <th>Link</th>
                 <th>Distance</th>
                 <th>Date</th>
                 <th>Actions</th>
@@ -20,12 +19,10 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('training_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.idTag }}</td>
-                <td>{{ entity.idCity }}</td>
+                <td>{{ entity.tag }}</td>
+                <td>{{ entity.city }}</td>
                 <td>{{ entity.nameUser }}</td>
-                <td>{{ entity.link }}</td>
                 <td>{{ entity.distance }}</td>
-                <td>{% if entity.date %}{{ entity.date|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                 <ul>
                     <li>

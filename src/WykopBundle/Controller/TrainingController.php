@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use WykopBundle\Entity\Training;
+use WykopBundle\Entity\Distance;
 use WykopBundle\Form\TrainingType;
 
 /**
@@ -42,27 +43,62 @@ class TrainingController extends Controller
      * @Method("POST")
      * @Template("WykopBundle:Training:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request){
+	$em = $this->getDoctrine()->getManager();
         $entity = new Training();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+	$distances = $entity->getDistance();
+	
         if ($form->isValid()) {
+	    $training = new Training();
+	    $training->setTag($entity->getTag());
+	    $training->setCity($entity->getCity());
+	    $training->setNameUser($entity->getNameUser());
 	    
+	    $training_details_provider = $this->get('getTrainingDetails');
+
 	    //Deal with multiple trainings in one form
-	    
-	    //Send distance to @getTrainingDetails - retrvie details
-	    //$training_details = $this->get('getTrainingDetails');
-	    //$training_details->get('https://www.endomondo.com/workouts/546810831/10959221');
-	    $em = $this->getDoctrine()->getManager();
-	    
+	    foreach($distances as $dist){
+		$distance = new Distance();
+		
+		//Send distance to @getTrainingDetails - retrvie details
+		$training_details = $training_details_provider->get($dist);
+		dump($training_details);
+		//Set details about every distance
+		if(count($training_details) > 1){
+		    $distance->setLink($dist);
+		}
+		
+		$distance->setDistance($training_details['distance']);
+		if(isset($training_details['start_time']))
+		    $distance->setStartDate($training_details['start_time']);
+		else{
+		    //$distance->setStartDate($entity->getDateAdd());
+		    $distance->setStartDate(new DateTime('now'));
+		}
+		
+		if(isset($training_details['start_time']))
+		    $distance->setDuration($training_details['duration']);
+		
+		if(isset($training_details['duration']))
+		    $distance->setAvgSpeed($training_details['speed_avg']);
+		
+		if(isset($training_details['speed_avg']))
+		    $distance->setCalories($training_details['calories']);
+		
+		if(isset($training_details['calories']))
+		    $distance->setDetails($training_details['training']);
+	
+		$em->persist($distance);
+		$training->setDistance($distance);
+	
+		
+	    }
+
 	    //Set username from session
-	    $entity->setNameUser('W KONTROLERZE');
-	    
-            $em->persist($entity);
-            $em->flush();
-	    
+	    $training->setNameUser('ANONIMOWO');
 	    
 	    //Get last distance
 	    //$lastDistance = $this->get('LastDistance');
@@ -73,11 +109,14 @@ class TrainingController extends Controller
 	    
 	    //Send new entry to Wykop
 	    
+	    $em->persist($training);
+	    $em->flush();
+	    dump($training);
 	    
 	    //If Success then redirect to Index(or training_show?)
 	    //elseif forwardTo Index -> with all data from form
 	    
-            return $this->redirect($this->generateUrl('training_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('training_show', array('id' => $training->getId())));
         }
 
         return array(

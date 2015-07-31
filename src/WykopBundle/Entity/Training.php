@@ -3,6 +3,7 @@
 namespace WykopBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Training
@@ -27,7 +28,7 @@ class Training
      * @ORM\ManyToOne(targetEntity="Tag")
      * @ORM\JoinColumn(name="id_tag", )
      */
-    private $idTag;
+    private $tag;
 
     /**
      * @var integer
@@ -35,7 +36,15 @@ class Training
      * @ORM\ManyToOne(targetEntity="City")
      * @ORM\JoinColumn(name="id_city")
      */
-    private $idCity;
+    private $city;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\ManyToMany(targetEntity="Distance")
+     * @ORM\JoinColumn(name="id_distance")
+     */
+    private $distance;
 
     /**
      * @var string
@@ -45,33 +54,19 @@ class Training
     private $nameUser;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="link", type="string", length=255, nullable=true)
-     */
-    private $link;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="distance", type="float")
-     */
-    private $distance;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="datetime")
-     */
-    private $date;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_add", type="datetime")
      */
     private $date_add;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="details", type="text", nullable=true)
+     */
+    private $details;
+    
     public function __construct(){
 	$date = new \DateTime();
 	$minutes = $date->format('i');
@@ -84,6 +79,8 @@ class Training
         $this->date = $date;
 	
 	$this->date_add = new \DateTime();
+	
+	$this->distance = new ArrayCollection();
     }
     
     /**
@@ -97,28 +94,18 @@ class Training
     }
 
     /**
-     * Set idTag
+     * Set Tag
      *
-     * @param integer $idTag
+     * @param Tag $Tag
      * @return Training
      */
-    public function setIdTag($idTag)
+    public function setTag($Tag)
     {
-        $this->idTag = $idTag;
+        $this->tag = $Tag;
 
         return $this;
     }
 
-    /**
-     * Get idTag
-     *
-     * @return integer 
-     */
-    public function getIdTag()
-    {
-        return $this->idTag;
-    }
-    
     /**
      * Get Tag
      *
@@ -126,32 +113,55 @@ class Training
      */
     public function getTag()
     {
-        return $this->idTag;
+        return $this->tag;
     }
 
     /**
-     * Set idCity
+     * Set City
      *
-     * @param integer $idCity
+     * @param City $City
      * @return Training
      */
-    public function setIdCity($idCity)
+    public function setCity($City)
     {
-        $this->idCity = $idCity;
+        $this->city = $City;
 
         return $this;
     }
 
     /**
-     * Get idCity
+     * Get City
      *
-     * @return integer 
+     * @return City 
      */
-    public function getIdCity()
+    public function getCity()
     {
-        return $this->idCity;
+        return $this->city;
+    }
+    
+    /**
+     * Set distance
+     *
+     * @param Distance $distance
+     * @return Training
+     */
+    public function setDistance($distance)
+    {
+        $this->distance->add($distance);
+
+        return $this;
     }
 
+    /**
+     * Get distance
+     *
+     * @return Distance
+     */
+    public function getDistance()
+    {
+        return $this->distance;
+    }
+    
     /**
      * Set nameUser
      *
@@ -176,75 +186,6 @@ class Training
     }
 
     /**
-     * Set link
-     *
-     * @param string $link
-     * @return Training
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-
-        return $this;
-    }
-
-    /**
-     * Get link
-     *
-     * @return string 
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Set distance
-     *
-     * @param float $distance
-     * @return Training
-     */
-    public function setDistance($distance)
-    {
-        $this->distance = $distance;
-
-        return $this;
-    }
-
-    /**
-     * Get distance
-     *
-     * @return float 
-     */
-    public function getDistance()
-    {
-        return $this->distance;
-    }
-
-    /**
-     * Set date
-     *
-     * @param \DateTime $date
-     * @return Training
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * Get date
-     *
-     * @return \DateTime 
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
      * Set add date
      *
      * @param \DateTime $date
@@ -265,5 +206,28 @@ class Training
     public function getDateAdd()
     {
         return $this->date_add;
+    }
+    
+    /**
+     * Set details
+     *
+     * @param string $details
+     * @return Distance
+     */
+    public function setDetails($details)
+    {
+        $this->details= $details;
+
+        return $this;
+    }
+
+    /**
+     * Get details
+     *
+     * @return string
+     */
+    public function getDetails()
+    {
+        return $this->details;
     }
 }

@@ -15,7 +15,7 @@ class TrainingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('idTag', 'entity', array(
+            ->add('Tag', 'entity', array(
 		'label' => false,
 		'placeholder' => 'Wybierz tag',
 		'class' => 'WykopBundle:Tag',
@@ -23,7 +23,7 @@ class TrainingType extends AbstractType
 		    'oninvalid' => 'InvalidMsg(this);'
 		)
 		))
-            ->add('idCity', 'entity', array(
+            ->add('City', 'entity', array(
 		'required' => false, 
 		'label' => false, 
 		'placeholder' => 'Wybierz miasto',
@@ -32,33 +32,27 @@ class TrainingType extends AbstractType
             ->add('nameUser', 'hidden', array(
 		'label' => 'Login'
 		))
-            ->add('link', 'hidden', array(
-		'required' => false, 
-		'label' => false, 
-		'attr' => array(
-		    'placeholder' => 'Endomondo/Strava/RunKeeper'
-		    )
-		))
-            ->add('distance', 'text', array(
+            ->add('distance', 'collection', array(
+		'type' => 'text',
+		'allow_add' => true,
+		'prototype' => true,
 		'required' => true,
-		'label' => false,
-		'attr' => array(
-		    'title' => 'Podaj dystans lub link do treningu Endomondo/Strava/RunKeeper',
-		    'oninvalid' => 'InvalidMsg(this);',
-		    'placeholder' => 'Podaj dystans lub link do treningu Endomondo/Strava/RunKeeper'
-		    )
+		'label' => false
 		))
-	    ->add('description', 'textarea', array(
+	    ->add('date', 'collection', array(
+		'type' => 'datetime',
+		'allow_add' => true,
+		'prototype' => true,
+		'mapped' => false,
+		'label' => false
+	    ))
+	    ->add('details', 'textarea', array(
 		'required' => false,
 		'label' => false,
-		'mapped' => false,
 		'attr' => array(
 		    'placeholder' => 'Miejsce na opis'
 		    )
-		))
-	    ->add('date', 'datetime', array(
-		'label' => false
-	    ));
+		));
     }
     
 
