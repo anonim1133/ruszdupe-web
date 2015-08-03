@@ -4,6 +4,7 @@ namespace WykopBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormError;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -50,9 +51,8 @@ class TrainingController extends Controller
         $form->handleRequest($request);
 
 	$distances = $entity->getDistance();
-	
-        if ($form->isValid()) {
-	    dump($entity);
+
+	if ($this->isFormTrainingValid($form, $distances)){
 	    
 	    $training = new Training();
 	    $training->setTag($entity->getTag());
@@ -311,5 +311,27 @@ class TrainingController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    private function isFormTrainingValid($form, $distances){
+	
+	$valid = false;
+	
+	if(count($distances) <= 0){
+	    $error = new FormError("Musisz podać co najmniej jeden wynik");
+	    $form->get('distance')->addError($error);
+	}else{
+	    $valid = true;
+	}
+	
+	foreach($distances as $distance)
+	    if($distance == 0){
+		    $valid = false;
+		    
+		    $error = new FormError("Musisz podać co najmniej jeden wynik większy od 0");
+		    $form->get('distance')->addError($error);
+	    }
+	
+	return $form->isValid() && $valid;
     }
 }
