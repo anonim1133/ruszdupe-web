@@ -80,7 +80,7 @@ class TrainingController extends Controller
 		}elseif(isset($entity->getDates()[$index])){
 		    $distance->setStartDate($entity->getDates()[$index]);
 		}else{
-		    $distance->setStartDate(new DateTime('now'));
+		    $distance->setStartDate(new \DateTime('now'));
 		}
 		
 		if(isset($training_details['duration'])){
