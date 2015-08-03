@@ -58,7 +58,7 @@ class getTrainingDetails{
 	    if(isset($training->max_heartrate))
 		$this->_training['heart_rate_max'] = $training->max_heartrate;
 	}else{
-	    $this->_training['distance'] = (int)$url;
+	    $this->_training['distance'] = $url;
 	}
     }
     

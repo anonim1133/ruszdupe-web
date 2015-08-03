@@ -67,13 +67,26 @@ class TrainingController extends Controller
 		
 		//Send distance to @getTrainingDetails - retrvie details
 		$training_details = $training_details_provider->get($dist);
-		dump($training_details);
+
 		//Set details about every distance
 		if(count($training_details) > 1){
 		    $distance->setLink($dist);
 		}
 		
-		$distance->setDistance($training_details['distance']);
+		$value_distance = $training_details['distance'];
+		
+		
+		$value_distance = preg_replace('/[^\.\,0-9]+/', '', $value_distance);
+		$value_distance = preg_replace('/[\,]+/', '.', $value_distance);
+		
+		if($training->getTag()->getRound()){
+		    $value_distance = round($value_distance);
+		}else{
+		    
+		    $value_distance = number_format((float)$value_distance, 2, '.', '');
+		}
+			
+		$distance->setDistance($value_distance);
 		
 		if(isset($training_details['start_time'])){
 		    $distance->setStartDate($training_details['start_time']);
@@ -328,7 +341,7 @@ class TrainingController extends Controller
 	    if($distance == 0){
 		    $valid = false;
 		    
-		    $error = new FormError("Musisz podać co najmniej jeden wynik większy od 0");
+		    $error = new FormError("Musisz podać co najmniej jeden wynik, każdy musi być większy od 0");
 		    $form->get('distance')->addError($error);
 	    }
 	
