@@ -116,6 +116,7 @@ class TrainingType extends AbstractType
 		))
 	    ->add('ad', 'checkbox', array(
 		'required' => false,
+		'label' => 'Reklama na mikroblogu?',
 		'attr' => array(
 		    'checked' => $ad_checked
 		)

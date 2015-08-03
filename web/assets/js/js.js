@@ -61,14 +61,17 @@ function addDistanceForm($collectionHolder, $newLinkLi) {
         // prevent the link from creating a "#" on the URL
         e.preventDefault();
 
+	if($(this).parent().parent().find('select').length == 0){
+	    $collectionHolder = $('div#wykopbundle_training_dates');
+	    var prototype = $collectionHolder.data('prototype');
 
-	$collectionHolder = $('div#wykopbundle_training_dates');
-        var prototype = $collectionHolder.data('prototype');
+	    var index = $(this).parent().parent().find('input').attr('index');
+	    var newForm = prototype.replace(/__name__/g, index);	
 
-	var index = $(this).parent().parent().find('input').attr('index');
-	var newForm = prototype.replace(/__name__/g, index);	
-
-	$(this).parent().after(newForm);
+	    $(this).parent().after(newForm);
+	}
+	
+	
     });
     var $newDateLi = $('<span id="add_date_btn"></span>').append($addDateLink);
 
