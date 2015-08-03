@@ -42,7 +42,7 @@ class Training
      * @var integer
      *
      * @ORM\ManyToMany(targetEntity="Distance")
-     * @ORM\JoinColumn(name="id_distance")
+     * @ORM\JoinColumn(name="id_distance", nullable=false)
      */
     private $distance;
 
@@ -71,6 +71,11 @@ class Training
      * @var \DateTime
      */
     private $dates;
+    
+    /**
+     * @var boolean
+     */
+    private $ad;
     
     public function __construct(){
 	$date = new \DateTime();
@@ -258,5 +263,27 @@ class Training
     public function getDates()
     {
         return $this->dates;
+    }
+    
+    /**
+     * Set ad
+     * 
+     * @return Training
+     */
+    public function setAd($on){
+	$this->ad = $on;
+	
+	setcookie('ad', $on, time()+3600*24*32);
+	
+	return $this;
+    }
+    
+    /**
+     * Get ad
+     * 
+     * @return boolean
+     */
+    public function getAd(){
+	return $this->ad;
     }
 }

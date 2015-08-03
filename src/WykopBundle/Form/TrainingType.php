@@ -63,6 +63,8 @@ class TrainingType extends AbstractType
 	    $date->modify('-'.$minutes.' minutes');
 	}
 	
+	$ad_checked = true;
+	
         $builder
             ->add('Tag', 'entity', array(
 		'label' => false,
@@ -86,7 +88,10 @@ class TrainingType extends AbstractType
 		'allow_add' => true,
 		'prototype' => true,
 		'required' => true,
-		'label' => false
+		'label' => false,
+		'options' => array(
+		    'required' => true
+		)
 		))
 	    ->add('dates', 'collection', array(
 		'type' => 'datetime',
@@ -108,7 +113,13 @@ class TrainingType extends AbstractType
 		'attr' => array(
 		    'placeholder' => 'Miejsce na opis'
 		    )
-		));
+		))
+	    ->add('ad', 'checkbox', array(
+		'required' => false,
+		'attr' => array(
+		    'checked' => $ad_checked
+		)
+	    ));
     }
     
 
