@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -16,9 +16,18 @@ class IndexController extends Controller
      */
     public function showIndexAction(){
     
-        
-        
-       
+        $session = new Session();
+        $token = $this->get('security.token_storage')->getToken();
+	
+	if($token->getProviderKey() == 'wykop'){
+	    $login_date = $token->getAttribute('wykop_login_date');
+	    $now_date = new \DateTime('now');
+	    
+	    $diff = $login_date->diff($now_date);
+	    
+	    if($diff->format('%h') >= 23)
+		return $this->redirectToRoute ('login');
+	}
         
         return $this->redirectToRoute('training_new', array(), 301);
     }

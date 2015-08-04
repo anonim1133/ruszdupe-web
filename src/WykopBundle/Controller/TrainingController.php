@@ -154,7 +154,7 @@ class TrainingController extends Controller
 		    $distance->setDetails($training_details['training']);
 		}
 		
-		//$em->persist($distance);
+		$em->persist($distance);
 		$training->setDistance($distance);
 	    }
 	    
@@ -232,12 +232,12 @@ class TrainingController extends Controller
 			. "\n" . '!Będą z tego ładne wykresiki'
 			. "\n" . '!Powiedzcie mamie, powiedzcie babci, niech odejmują!';
 	    }
-	    
-	    dump($entry_content);
-	    die;
 
 	    //Set username from session
-	    $training->setNameUser('ANONIMOWO');
+	    $token = $this->get('security.token_storage')->getToken();
+	    
+	    $training->setNameUser($token->getUsername());
+	    $training->setDetails($entry_content);
 	    
 	    //Subtract distances, build operation
 	    //Compile new entry
@@ -246,7 +246,6 @@ class TrainingController extends Controller
 	    
 	    $em->persist($training);
 	    $em->flush();
-	    dump($training);
 	    
 	    //If Success then redirect to Index(or training_show?)
 	    //elseif forwardTo Index -> with all data from form
