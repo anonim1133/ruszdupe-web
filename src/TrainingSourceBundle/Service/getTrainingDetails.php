@@ -29,6 +29,8 @@ class getTrainingDetails{
 	    $this->_training['start_time'] = $training->local_start_time;
 	    $this->_training['duration'] = round($training->duration);
 	    $this->_training['distance'] = $training->distance;
+	    $this->_training['ascent'] = $training->ascent;
+	    $this->_training['descent'] = $training->descent;
 	    $this->_training['distance_vertical'] = $training->ascent+$training->descent;
 	    $this->_training['calories'] = round($training->calories);
 	    $this->_training['speed_avg'] = $training->speed_avg;

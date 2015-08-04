@@ -60,7 +60,29 @@ class TrainingController extends Controller
 	    $training->setNameUser($entity->getNameUser());
 	    
 	    $training_details_provider = $this->get('getTrainingDetails');
+	    
+	    //Get last distance
+	    $lastDistance = $this->get('LastDistance');
+	    $lastDistance = $lastDistance->get($entity->getTag()->getName());
+	    
+	    $lastDistance = preg_replace('/[^\.\,0-9]+/', '', $lastDistance);
+	    $lastDistance = preg_replace('/[\,]+/', '.', $lastDistance);
+	    
+	    $operation = '';
+	    
+	    if($training->getTag()->getRound()){
+		    $lastDistance = round($lastDistance);
+		    $operation = $lastDistance . ' - ';
+	    }else{
+		    $lastDistance = number_format((float)$lastDistance, 2, '.', '');
+		    $operation = number_format((float)$lastDistance, 2, ',', '') . ' - ';
+	    }
 
+	    $result = $lastDistance;
+	    
+	    $entry_content = '';
+	    $entry_stats = array();
+	    
 	    //Deal with multiple trainings in one form
 	    foreach($distances as $index => $dist){
 		$distance = new Distance();
@@ -81,12 +103,15 @@ class TrainingController extends Controller
 		
 		if($training->getTag()->getRound()){
 		    $value_distance = round($value_distance);
+		    $operation .= $value_distance . ' - ';
 		}else{
-		    
 		    $value_distance = number_format((float)$value_distance, 2, '.', '');
+		    $operation .= number_format((float)$value_distance, 2, ',', '') . ' - ';
 		}
-			
+		
 		$distance->setDistance($value_distance);
+		
+		$result -= $value_distance;
 		
 		if(isset($training_details['start_time'])){
 		    $distance->setStartDate($training_details['start_time']);
@@ -98,29 +123,121 @@ class TrainingController extends Controller
 		
 		if(isset($training_details['duration'])){
 		    $distance->setDuration($training_details['duration']);
+		    $entry_stats[$index]['duration'] = $training_details['duration'];
 		}
 		
-		if(isset($training_details['speed_avg']))
+		if(isset($training_details['speed_avg'])){
 		    $distance->setAvgSpeed($training_details['speed_avg']);
+		    $entry_stats[$index]['speed_avg'] = $training_details['speed_avg'];
+		}
+		    
 		
-		if(isset($training_details['calories']))
+		if(isset($training_details['calories'])){
 		    $distance->setCalories($training_details['calories']);
+		    $entry_stats[$index]['calories'] = $training_details['calories'];
+		    
+		}
 		
-		if(isset($training_details['training']))
+		$entry_stats[$index]['distance'] = $value_distance;
+
+		if(isset($training_details['distance_vertical'])){
+		    $entry_stats[$index]['vertical'] =  $training_details['distance_vertical'] . 'm(↑'. $training_details['ascent'] .'m/↓' . $training_details['descent'] . 'm)';
+		}
+		
+		if(isset($training_details['heart_rate_avg']))
+		    $entry_stats[$index]['heart_rate_avg'] = $training_details['heart_rate_avg'];
+		
+		if(isset($training_details['heart_rate_max']))
+		    $entry_stats[$index]['heart_rate_max'] = $training_details['heart_rate_max'];
+		
+		if(isset($training_details['training'])){
 		    $distance->setDetails($training_details['training']);
-	
-		$em->persist($distance);
-		$training->setDistance($distance);
-	
+		}
 		
+		//$em->persist($distance);
+		$training->setDistance($distance);
 	    }
+	    
+	    $operation = preg_replace('/- $/', '= ', $operation);
+	    
+	    if($training->getTag()->getRound()){
+		$operation .= $result;
+	    }else{
+		$operation .= number_format((float)$result, 2, ',', '');
+	    }
+	    
+	    //Compile entry content
+	    $entry_content .= $operation . "\n\n";
+	    
+	    $entry_content .= $entity->getDetails() . "\n\n";
+	    
+	    $entry_content .= "Statystyki:\n\n";
+	    
+	    //distance, duration, speed_avg, calories, vertical
+	    foreach($entry_stats as $stats){
+		echo "\n";
+		if(isset($stats['distance']))
+		    $entry_content .= 'Dystans: ' . $stats['distance'] . " km\n";
+		
+		if(isset($stats['vertical']))
+		    $entry_content .= 'Wertykalnie: ' . $stats['vertical'] . "\n";
+		
+		if(isset($stats['duration'])){
+		    $date = new \DateTime();
+		    $date->setTimestamp($stats['duration']);
+		    $date->setTimezone(new \DateTimeZone('UTC'));
+		    
+		    
+		    $entry_content .= 'Czas: ◷' . $date->format('H:i:s') . "\n";
+		}
+		
+		if(isset($stats['speed_avg'])){
+		    $tmp = 60/(float)$stats['speed_avg'];
+		    $tempo = floor($tmp) . ':';
+		    
+		    $tmp = $tmp - floor($tmp);
+		    
+		    $tempo .= floor(($tmp)*60);
+		    
+			    
+			    
+		    $entry_content .= 'Średnie tempo: ' . $tempo . " min/km\n";
+		    $entry_content .= 'Średnia prędkość: ' . number_format((float)$stats['speed_avg'], 2, ',', '') . " km/h\n";
+		}
+		
+		if(isset($stats['calories']))
+		    $entry_content .= 'Kalorie: ' . $stats['calories'] . " cal\n";
+		
+		if(isset($stats['heart_rate_avg']))
+		    $entry_content .= 'Średni puls: ❤' . $stats['heart_rate_avg'] . "bpm\n";
+		
+		if(isset($stats['heart_rate_max']))
+		    $entry_content .= 'Maksymalny puls: ❤' . $stats['heart_rate_max'] . "bpm\n";
+		
+		$entry_content .= "\n";
+	    }
+	    
+	    $entry_content .= '#' . $entity->getTag()->getName() . "\n\n";
+	    
+	    $city = $entity->getCity();
+	    if(!is_null($city))
+		$entry_content .= '#rusz' . $city->getName() . "\n\n";
+
+	    if($entity->getAd() == true){
+		$entry_content .= 'Skrypt dodany za pomocą [tego skryptu](http://ruszdupe.anonim1133.me)'
+			. "\n" . '!Najlepszy, bo darmowy'
+			. "\n" . '!Jest do wszystkiego więc... Jest dobry!'
+			. "\n" . '!Samo liczy, to chyba magia'
+			. "\n" . '!Skrypt się nie myli, to inni się mylą'
+			. "\n" . '!Będą z tego ładne wykresiki'
+			. "\n" . '!Powiedzcie mamie, powiedzcie babci, niech odejmują!';
+	    }
+	    
+	    dump($entry_content);
+	    die;
 
 	    //Set username from session
 	    $training->setNameUser('ANONIMOWO');
-	    
-	    //Get last distance
-	    //$lastDistance = $this->get('LastDistance');
-	    //$lastDistance->get($entity->getTag()->getName());
 	    
 	    //Subtract distances, build operation
 	    //Compile new entry
@@ -352,7 +469,7 @@ class TrainingController extends Controller
 	}
 	
 	foreach($distances as $distance)
-	    if($distance == 0){
+	    if($distance == 0 && preg_match('/(strava)|(endomondo)|(http)/', $distance) == 0){
 		    $valid = false;
 		    
 		    $error = new FormError("Musisz podać co najmniej jeden wynik, każdy musi być większy od 0");
