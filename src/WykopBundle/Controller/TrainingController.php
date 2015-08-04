@@ -150,9 +150,9 @@ class TrainingController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Training $entity, $default_tag = 0)
+    private function createCreateForm(Training $entity, $default_tag = 0, $ad = false)
     {
-	$form = $this->createForm(new TrainingType($default_tag), $entity, array(
+	$form = $this->createForm(new TrainingType($default_tag, $ad), $entity, array(
             'action' => $this->generateUrl('training_create'),
             'method' => 'POST',
         ));
@@ -180,7 +180,13 @@ class TrainingController extends Controller
 	    $default_tag = $em->getReference("WykopBundle:Tag", $request->cookies->get('default_tag'));
 	}
 	
-	$form   = $this->createCreateForm($entity, $default_tag);
+	$ad = false;
+	
+	if(!is_null($request->cookies->get('ad'))){
+	    $ad = $request->cookies->get('ad');
+	}
+	
+	$form = $this->createCreateForm($entity, $default_tag, $ad);
 
         return array(
             'entity' => $entity,

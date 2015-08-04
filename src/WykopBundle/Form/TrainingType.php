@@ -8,8 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrainingType extends AbstractType
 {    
-    public function __construct($default_tag = 0) {
+    public function __construct($default_tag = 0, $ad = false) {
+	
 	$this->default_tag = $default_tag;
+	$this->ad = $ad;
     }
 
     /**
@@ -67,8 +69,6 @@ class TrainingType extends AbstractType
 	    $date->modify('-'.$minutes.' minutes');
 	}
 	
-	$ad_checked = true;
-	
         $builder
             ->add('Tag', 'entity', array(
 		'label' => false,
@@ -123,7 +123,7 @@ class TrainingType extends AbstractType
 		'required' => false,
 		'label' => 'Reklama na mikroblogu?',
 		'attr' => array(
-		    'checked' => $ad_checked
+		    'checked' => $this->ad
 		)
 	    ));
     }
