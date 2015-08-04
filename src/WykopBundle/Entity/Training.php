@@ -113,6 +113,8 @@ class Training
     public function setTag($Tag)
     {
         $this->tag = $Tag;
+	
+	setcookie('default_tag', $Tag->getId(), time()+3600*24*32);
 
         return $this;
     }

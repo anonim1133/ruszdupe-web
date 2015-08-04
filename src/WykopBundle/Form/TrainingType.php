@@ -7,7 +7,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrainingType extends AbstractType
-{
+{    
+    public function __construct($default_tag = 0) {
+	$this->default_tag = $default_tag;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -70,9 +74,10 @@ class TrainingType extends AbstractType
 		'label' => false,
 		'placeholder' => 'Wybierz tag',
 		'class' => 'WykopBundle:Tag',
+		'data' => $this->default_tag,
 		'attr' => array(
 		    'oninvalid' => 'InvalidMsg(this);'
-		)
+		    )
 		))
             ->add('City', 'entity', array(
 		'required' => false, 
