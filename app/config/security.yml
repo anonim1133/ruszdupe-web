@@ -29,6 +29,7 @@ security:
         - { path: ^/$, roles: ROLE_USER_WYKOP }
         - { path: ^/training/new$, roles: ROLE_USER_WYKOP }
         - { path: ^/training/([0-9]+)?$, method: GET,roles: ROLE_USER_WYKOP }
+        - { path: ^/training/$, method: POST,roles: ROLE_USER_WYKOP }
         - { path: ^/, roles: ROLE_ADMIN }
     
     role_hierarchy:
