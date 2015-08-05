@@ -27,7 +27,8 @@ jQuery(document).ready(function() {
     });
     
     //Add first distance
-    addDistanceForm($collectionHolder, $newLinkLi);
+    if($('form input[id^=wykopbundle_training_distance]').length == 0)
+	addDistanceForm($collectionHolder, $newLinkLi);
 });
 
 function InvalidMsg(textbox) {
