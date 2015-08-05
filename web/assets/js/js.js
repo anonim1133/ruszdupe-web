@@ -54,6 +54,9 @@ jQuery(document).ready(function() {
         // add a new distance element(see next code block)
         addDistanceForm($collectionHolder, $newLinkLi);
     });
+    
+    //Add first distance
+    addDistanceForm($collectionHolder, $newLinkLi);
 });
 
 function addDistanceForm($collectionHolder, $newLinkLi) {
