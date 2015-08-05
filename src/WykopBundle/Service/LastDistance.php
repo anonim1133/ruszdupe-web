@@ -18,7 +18,10 @@ class LastDistance{
 	
 
         if($this->_api->isValid()){
-            preg_match('/=(.+)/', $result['items'][0]['body'], $result);
+	    if(isset($result['items'][0]))
+		preg_match('/=(.+)/', $result['items'][0]['body'], $result);
+	    else throw new \Exception('Brak ostatniego dystansu');
+	    
             $result = $result[1];
 
             $result = preg_replace('/[^\.\,0-9]+/', '', $result);
@@ -41,7 +44,7 @@ class LastDistance{
             
 	    return $result;
         }else{
-	    return $this->_api->getError();
+	    throw new \Exception('Wykop mówi: ' . $this->_api->getError());
         }
     }
 }
