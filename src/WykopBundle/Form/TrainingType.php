@@ -11,7 +11,10 @@ class TrainingType extends AbstractType
     public function __construct($default_tag = 0, $ad = false) {
 	
 	$this->default_tag = $default_tag;
-	$this->ad = $ad;
+	if($ad == 'true')
+	    $this->ad = true;
+	else
+	    $this->ad = false;
     }
 
     /**

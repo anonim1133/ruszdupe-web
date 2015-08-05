@@ -274,8 +274,10 @@ class Training
      */
     public function setAd($on){
 	$this->ad = $on;
-	
-	setcookie('ad', $on, time()+3600*24*32);
+	if($on)
+	    setcookie('ad', 'true', time()+3600*24*32);
+	else
+	    setcookie('ad', 'false', time()+3600*24*32);
 	
 	return $this;
     }

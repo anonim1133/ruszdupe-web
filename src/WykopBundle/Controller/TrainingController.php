@@ -249,7 +249,6 @@ class TrainingController extends Controller
 	    //Compile new entry
 	    
 	    //Send new entry to Wykop
-	    
 	    $wykop = $this->get('WykopApi');
 	    $wykop->setUserKey($token->getCredentials());
 	    $result = $wykop->doRequest('entries/add', array('body' => $entry_content));//, 'embed' => $this->embed));
@@ -309,7 +308,7 @@ class TrainingController extends Controller
 	    $default_tag = $em->getReference("WykopBundle:Tag", $request->cookies->get('default_tag'));
 	}
 	
-	$ad = false;
+	$ad = 'false';
 	
 	if(!is_null($request->cookies->get('ad'))){
 	    $ad = $request->cookies->get('ad');
