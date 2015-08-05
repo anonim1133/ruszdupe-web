@@ -285,7 +285,13 @@ class TrainingController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Dodaj', 'attr' => array('class' => 'btn')));
+        $form->add('submit', 'submit', array(
+	    'label' => 'Dodaj', 
+	    'attr' => array(
+		'class' => 'btn',
+		'onClick' => 'addEntry()'
+		)
+	    ));
 
         return $form;
     }

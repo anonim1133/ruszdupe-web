@@ -1,32 +1,3 @@
-function InvalidMsg(textbox) {
-    
-    if (textbox.value == '') {
-        textbox.setCustomValidity('To pole jest wymagane');
-    }
-    else if(textbox.validity.typeMismatch){
-        textbox.setCustomValidity('Nieprawidłowy format danych');
-    }
-    else {
-        textbox.setCustomValidity('');
-    }
-    return true;
-}
-
-function embed(){
-	$("a#dodajObrazUrl").after('<input name="embedUrl" type="text" class="pole" placeholder="Podaj url">');
-	$("a#dodajObrazUrl").remove();
-}
-
-function dodajDystans(){
-    $('<input name="dystans[]" type="text" class="pole" placeholder="Wpisz dystans">').insertBefore('#pierwszy');
-}
-function dodajWpis(){
-	$('input#dodaj').attr('disabled', 'true');
-	$('form').submit();
-	$('form').toggle();
-	$('.container').append('<img id="loading" src="assets/loading-wheel.gif">');
-}
-
 
 
 var $collectionHolder;
@@ -58,6 +29,27 @@ jQuery(document).ready(function() {
     //Add first distance
     addDistanceForm($collectionHolder, $newLinkLi);
 });
+
+function InvalidMsg(textbox) {
+    
+    if (textbox.value == '') {
+        textbox.setCustomValidity('To pole jest wymagane');
+    }
+    else if(textbox.validity.typeMismatch){
+        textbox.setCustomValidity('Nieprawidłowy format danych');
+    }
+    else {
+        textbox.setCustomValidity('');
+    }
+    return true;
+}
+
+function addEntry(){
+	$('form button').attr('disabled', 'true');
+	$('form').submit();
+	$('form').toggle();
+	$('div.content').append('<img id="loading" src="/assets/img/loading-wheel.gif">');
+}
 
 function addDistanceForm($collectionHolder, $newLinkLi) {
     var $addDateLink = $('<a class="btn" href="#">Ustaw datę</a>').on('click', function(e) {
@@ -104,4 +96,12 @@ function addDistanceForm($collectionHolder, $newLinkLi) {
     // Display the form in the page in an li, before the "Add a Distance" link li
     var $newFormLi = $('<div></div>').append(newForm);
     $newLinkLi.before($newFormLi);
+}
+
+
+
+
+function embed(){
+	$("a#dodajObrazUrl").after('<input name="embedUrl" type="text" class="pole" placeholder="Podaj url">');
+	$("a#dodajObrazUrl").remove();
 }
