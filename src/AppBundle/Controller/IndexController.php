@@ -19,14 +19,16 @@ class IndexController extends Controller
         $session = new Session();
         $token = $this->get('security.token_storage')->getToken();
 	
-	if($token->getProviderKey() == 'wykop'){
-	    $login_date = $token->getAttribute('wykop_login_date');
-	    $now_date = new \DateTime('now');
-	    
-	    $diff = $login_date->diff($now_date);
-	    
-	    if($diff->format('%h') >= 23)
-		return $this->redirectToRoute ('login');
+	if($token->isAuthenticated() && count($token->getRoles()) && $token->getProviderKey() == 'wykop'){
+		$login_date = $token->getAttribute('wykop_login_date');
+		$now_date = new \DateTime('now');
+
+		$diff = $login_date->diff($now_date);
+
+		if($diff->format('%h') >= 23)
+		    return $this->redirectToRoute ('login');
+	}else{
+	    return $this->redirectToRoute('login', array(), 301);
 	}
         
         return $this->redirectToRoute('training_new', array(), 301);
