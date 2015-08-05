@@ -11,9 +11,9 @@
                 </div>
                 <div class="avatar_container">
                         <a href="?wyloguj">
-                                <img style="background-image: url('/assets/img/wykop.png');" class="img-avatar"alt="">
+                                <img style="background-image: url('{{ token.getAttribute('wykop_avatar') }}');" class="img-avatar"alt="">
                         </a>
-                        <span class="user">Witaj, nieznajomy</span>
+                        <span class="user">Witaj, {{ token.getUser() }}</span>
                 </div>
         </div><!-- header -->
 	
