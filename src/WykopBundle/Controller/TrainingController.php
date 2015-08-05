@@ -80,6 +80,7 @@ class TrainingController extends Controller
 
 	    $result = $lastDistance;
 	    
+	    $is_stats = false;
 	    $entry_content = '';
 	    $entry_stats = array();
 	    
@@ -127,6 +128,7 @@ class TrainingController extends Controller
 		}
 		
 		if(isset($training_details['speed_avg'])){
+		    $is_stats = true;
 		    $distance->setAvgSpeed($training_details['speed_avg']);
 		    $entry_stats[$index]['speed_avg'] = $training_details['speed_avg'];
 		}
@@ -171,50 +173,54 @@ class TrainingController extends Controller
 	    
 	    $entry_content .= $entity->getDetails() . "\n\n";
 	    
-	    $entry_content .= "Statystyki:\n\n";
+	    if($is_stats)
+		$entry_content .= "Statystyki:\n\n";
 	    
 	    //distance, duration, speed_avg, calories, vertical
+
 	    foreach($entry_stats as $stats){
-		echo "\n";
-		if(isset($stats['distance']))
-		    $entry_content .= 'Dystans: ' . $stats['distance'] . " km\n";
-		
-		if(isset($stats['vertical']))
-		    $entry_content .= 'Wertykalnie: ' . $stats['vertical'] . "\n";
-		
-		if(isset($stats['duration'])){
-		    $date = new \DateTime();
-		    $date->setTimestamp($stats['duration']);
-		    $date->setTimezone(new \DateTimeZone('UTC'));
-		    
-		    
-		    $entry_content .= 'Czas: ◷' . $date->format('H:i:s') . "\n";
+		if(count($stats) >  1){
+		    echo "\n";
+		    if(isset($stats['distance']))
+			$entry_content .= 'Dystans: ' . $stats['distance'] . " km\n";
+
+		    if(isset($stats['vertical']))
+			$entry_content .= 'Wertykalnie: ' . $stats['vertical'] . "\n";
+
+		    if(isset($stats['duration'])){
+			$date = new \DateTime();
+			$date->setTimestamp($stats['duration']);
+			$date->setTimezone(new \DateTimeZone('UTC'));
+
+
+			$entry_content .= 'Czas: ◷' . $date->format('H:i:s') . "\n";
+		    }
+
+		    if(isset($stats['speed_avg'])){
+			$tmp = 60/(float)$stats['speed_avg'];
+			$tempo = floor($tmp) . ':';
+
+			$tmp = $tmp - floor($tmp);
+
+			$tempo .= floor(($tmp)*60);
+
+
+
+			$entry_content .= 'Średnie tempo: ' . $tempo . " min/km\n";
+			$entry_content .= 'Średnia prędkość: ' . number_format((float)$stats['speed_avg'], 2, ',', '') . " km/h\n";
+		    }
+
+		    if(isset($stats['calories']))
+			$entry_content .= 'Kalorie: ' . $stats['calories'] . " cal\n";
+
+		    if(isset($stats['heart_rate_avg']))
+			$entry_content .= 'Średni puls: ❤' . $stats['heart_rate_avg'] . "bpm\n";
+
+		    if(isset($stats['heart_rate_max']))
+			$entry_content .= 'Maksymalny puls: ❤' . $stats['heart_rate_max'] . "bpm\n";
+
+		    $entry_content .= "\n";
 		}
-		
-		if(isset($stats['speed_avg'])){
-		    $tmp = 60/(float)$stats['speed_avg'];
-		    $tempo = floor($tmp) . ':';
-		    
-		    $tmp = $tmp - floor($tmp);
-		    
-		    $tempo .= floor(($tmp)*60);
-		    
-			    
-			    
-		    $entry_content .= 'Średnie tempo: ' . $tempo . " min/km\n";
-		    $entry_content .= 'Średnia prędkość: ' . number_format((float)$stats['speed_avg'], 2, ',', '') . " km/h\n";
-		}
-		
-		if(isset($stats['calories']))
-		    $entry_content .= 'Kalorie: ' . $stats['calories'] . " cal\n";
-		
-		if(isset($stats['heart_rate_avg']))
-		    $entry_content .= 'Średni puls: ❤' . $stats['heart_rate_avg'] . "bpm\n";
-		
-		if(isset($stats['heart_rate_max']))
-		    $entry_content .= 'Maksymalny puls: ❤' . $stats['heart_rate_max'] . "bpm\n";
-		
-		$entry_content .= "\n";
 	    }
 	    
 	    $entry_content .= '#' . $entity->getTag()->getName() . "\n\n";
@@ -244,14 +250,21 @@ class TrainingController extends Controller
 	    
 	    //Send new entry to Wykop
 	    
-	    $em->persist($training);
-	    $em->flush();
-	    
+	    $wykop = $this->get('WykopApi');
+	    $wykop->setUserKey($token->getCredentials());
+	    $result = $wykop->doRequest('entries/add', array('body' => $entry_content));//, 'embed' => $this->embed));
+
 	    //If Success then redirect to Index(or training_show?)
 	    //elseif forwardTo Index -> with all data from form
-	    
-            return $this->redirect($this->generateUrl('training_show', array('id' => $training->getId())));
-        }
+	    if($wykop->isValid()){
+		$em->persist($training);
+		$em->flush();
+		return $this->redirect('http://wykop.pl/wpis/'. (int)$result['id']);
+		//return $this->redirect($this->generateUrl('training_show', array('id' => $training->getId())));
+	    }else{
+		throw new \Exception($this->getError());//Instead of throwing exception pass error to view(through session flash bag?)
+	    }
+	}
 
         return array(
             'entity' => $entity,
