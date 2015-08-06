@@ -210,3 +210,23 @@ form[name=wykopbundle_training] textarea{
 div#wykopbundle_training_distance label{
     display:none;
 }
+
+input#wykopbundle_training_embed{
+    width: 100%;
+}
+
+input#wykopbundle_training_ad {
+  width: initial;
+  margin-left: 16px;
+  width: 32px;
+  height: 32px;
+}
+
+label[for=wykopbundle_training_ad]{
+    position: relative;
+    top: -12px;
+}
+
+select {
+  width: 100%;
+}

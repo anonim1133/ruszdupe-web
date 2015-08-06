@@ -73,6 +73,11 @@ class Training
     private $dates;
     
     /**
+     * @var string
+     */
+    private $embed;
+    
+    /**
      * @var boolean
      */
     private $ad;
@@ -265,6 +270,29 @@ class Training
     public function getDates()
     {
         return $this->dates;
+    }
+    
+    /**
+     * Set embed
+     *
+     * @param string $embed
+     * @return Training
+     */
+    public function setEmbed($embed)
+    {
+        $this->embed = $embed;
+
+        return $this;
+    }
+
+    /**
+     * Get embed
+     *
+     * @return string 
+     */
+    public function getEmbed()
+    {
+        return $this->embed;
     }
     
     /**

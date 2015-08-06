@@ -122,6 +122,13 @@ class TrainingType extends AbstractType
 		    'placeholder' => 'Miejsce na opis'
 		    )
 		))
+	    ->add('embed', 'text', array(
+		'required' => false,
+		'label' => false,
+		'attr' => array(
+		    'placeholder' => 'Link do obrazu który chcesz dołączyć do wpisu'
+		    )
+	    ))
 	    ->add('ad', 'checkbox', array(
 		'required' => false,
 		'label' => 'Reklama na mikroblogu?',

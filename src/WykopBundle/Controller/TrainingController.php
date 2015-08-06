@@ -251,7 +251,7 @@ class TrainingController extends Controller
 	    //Send new entry to Wykop
 	    $wykop = $this->get('WykopApi');
 	    $wykop->setUserKey($token->getCredentials());
-	    $result = $wykop->doRequest('entries/add', array('body' => $entry_content));//, 'embed' => $this->embed));
+	    $result = $wykop->doRequest('entries/add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
 
 	    //If Success then redirect to Index(or training_show?)
 	    //elseif forwardTo Index -> with all data from form
