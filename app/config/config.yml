@@ -71,6 +71,16 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        #second_level_cache:
+        #    region_cache_driver:
+        #        type:                 array
+        #        host:                 ~
+        #        port:                 ~
+        #        instance_class:       ~
+        #        class:                ~
+        #        id:                   ~
+        #        namespace:            ~
+        #        cache_provider:       ~
 
 # Swiftmailer Configuration
 swiftmailer:

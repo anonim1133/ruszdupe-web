@@ -230,7 +230,7 @@ class TrainingController extends Controller
 		$entry_content .= '#rusz' . $city->getName() . "\n\n";
 
 	    if($entity->getAd() == true){
-		$entry_content .= 'Skrypt dodany za pomocą [tego skryptu](http://ruszdupe.anonim1133.me)'
+		$entry_content .= 'Skrypt dodany za pomocą [tego skryptu]('. $this->container->getParameter('app_url') .')'
 			. "\n" . '!Najlepszy, bo darmowy'
 			. "\n" . '!Jest do wszystkiego więc... Jest dobry!'
 			. "\n" . '!Samo liczy, to chyba magia'
@@ -318,6 +318,8 @@ class TrainingController extends Controller
 	
 	if(!is_null($request->cookies->get('ad'))){
 	    $ad = $request->cookies->get('ad');
+	}else{
+	    $ad = 'true';
 	}
 	
 	$form = $this->createCreateForm($entity, $default_tag, $ad);

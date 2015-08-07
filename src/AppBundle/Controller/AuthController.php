@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
 	$wykop = $this->get('WykopApi');
 	//redirects to wykop
-        return $this->redirect($wykop->getConnectUrl('http://localhost:8000/checkIn'));
+        return $this->redirect($wykop->getConnectUrl($this->container->getParameter('app_url') . '/checkIn'));
     }
 
     /**
