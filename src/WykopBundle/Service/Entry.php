@@ -13,7 +13,6 @@ class Entry{
     
     function __construct($WykopApi){
             $this->_api = $WykopApi;
-	    dump($this->_api);
     }
     
     function setLastDistance(){
