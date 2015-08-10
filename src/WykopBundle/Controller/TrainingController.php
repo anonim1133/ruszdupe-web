@@ -74,7 +74,7 @@ class TrainingController extends Controller
 		    $lastDistance = round($lastDistance);
 		    $operation = $lastDistance . ' - ';
 	    }else{
-		    $lastDistance = number_format((float)$lastDistance, 2, '.', '');
+		    $lastDistance = number_format((float)$lastDistance, 2, '.', ' ');
 		    $operation = number_format((float)$lastDistance, 2, ',', '') . ' - ';
 	    }
 
@@ -165,7 +165,7 @@ class TrainingController extends Controller
 	    if($training->getTag()->getRound()){
 		$operation .= $result;
 	    }else{
-		$operation .= number_format((float)$result, 2, ',', '');
+		$operation .= number_format((float)$result, 2, ',', ' ');
 	    }
 	    
 	    //Compile entry content
