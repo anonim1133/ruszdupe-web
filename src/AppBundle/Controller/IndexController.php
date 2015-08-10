@@ -43,14 +43,14 @@ class IndexController extends Controller
         $training_details = $this->get('getTrainingDetails');
 		
 	
-	dump($training_details->get('https://www.endomondo.com/users/10391720/workouts/343135237'));
+//	dump($training_details->get('https://www.endomondo.com/users/10391720/workouts/343135237'));
 //	dump($training_details->get('https://www.endomondo.com/workouts/571529785/9982639'));
-	dump($training_details->get('http://www.strava.com/activities/56519726'));
+//	dump($training_details->get('http://www.strava.com/activities/56519726'));
 	
 	
 	
 	$lastDistance = $this->get('LastDistance');
-	dump($lastDistance->get('#rowerowyrownik'));
+	dump($lastDistance->get('#kochamgory'));
         
        
         

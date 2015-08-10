@@ -74,7 +74,7 @@ class TrainingController extends Controller
 		    $lastDistance = round($lastDistance);
 		    $operation = $lastDistance . ' - ';
 	    }else{
-		    $lastDistance = number_format((float)$lastDistance, 2, '.', ' ');
+		    $lastDistance = number_format((float)$lastDistance, 2, '.', '');
 		    $operation = number_format((float)$lastDistance, 2, ',', '') . ' - ';
 	    }
 
@@ -165,9 +165,9 @@ class TrainingController extends Controller
 	    if($training->getTag()->getRound()){
 		$operation .= $result;
 	    }else{
-		$operation .= number_format((float)$result, 2, ',', ' ');
+		$operation .= number_format((float)$result, 2, ',', '');
 	    }
-	    
+
 	    //Compile entry content
 	    $entry_content .= $operation . "\n\n";
 	    
@@ -207,7 +207,7 @@ class TrainingController extends Controller
 
 
 			$entry_content .= 'Średnie tempo: ' . $tempo . " min/km\n";
-			$entry_content .= 'Średnia prędkość: ' . number_format((float)$stats['speed_avg'], 2, ',', '') . " km/h\n";
+			$entry_content .= 'Średnia prędkość: ' . number_format((float)$stats['speed_avg'], 2, ',', ' ') . " km/h\n";
 		    }
 
 		    if(isset($stats['calories']))
