@@ -230,7 +230,7 @@ class TrainingController extends Controller
 		$entry_content .= '#rusz' . $city->getName();
 
 	    if($entity->getAd() == true){
-		$entry_content .= "\n\n" . 'Skrypt dodany za pomocą [tego skryptu]('. $this->container->getParameter('app_url') .')'
+		$entry_content .= "\n\n" . 'Wpis dodany za pomocą [tego skryptu]('. $this->container->getParameter('app_url') .')'
 			. "\n" . '!Najlepszy, bo darmowy'
 			. "\n" . '!Jest do wszystkiego więc... Jest dobry!'
 			. "\n" . '!Samo liczy, to chyba magia'
