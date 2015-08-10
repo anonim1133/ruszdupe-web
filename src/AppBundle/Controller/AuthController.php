@@ -42,7 +42,12 @@ class AuthController extends Controller
 		$answer = $wykop->doRequest('user/login', array('login' => $profile['login'], 'accountkey' => $session->get('token')));
 		if(!$wykop->isValid()) throw new Exception ($this->api->getError());
 			
-		$token = new UsernamePasswordToken($profile['login'], $answer['userkey'], 'wykop', ['ROLE_USER_WYKOP']);
+		$roles = ['ROLE_USER_WYKOP'];
+		
+		if($profile['login'] === 'anonim1133')
+		    $roles[] = 'ROLE_ADMIN';
+		
+		$token = new UsernamePasswordToken($profile['login'], $answer['userkey'], 'wykop', $roles);
 		$token->setAttribute('wykop_login', $profile['login']);
 		$token->setAttribute('wykop_group', $profile['author_group']);
 		$token->setAttribute('wykop_avatar', $profile['avatar_med']);
