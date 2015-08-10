@@ -119,7 +119,7 @@ class Training
     {
         $this->tag = $Tag;
 	
-	setcookie('default_tag', $Tag->getId(), time()+3600*24*32);
+	setcookie('default_tag', (is_object($Tag))?$Tag->getId():0, time()+3600*24*32);
 
         return $this;
     }

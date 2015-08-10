@@ -52,7 +52,7 @@ class TrainingController extends Controller
 
 	$distances = $entity->getDistance();
 
-	if ($this->isFormTrainingValid($form, $distances)){
+	if ($this->isFormTrainingValid($form, $distances, $entity->getTag())){
 	    
 	    $training = new Training();
 	    $training->setTag($entity->getTag());
@@ -476,7 +476,7 @@ class TrainingController extends Controller
         ;
     }
     
-    private function isFormTrainingValid($form, $distances){
+    private function isFormTrainingValid($form, $distances, $tag){
 	
 	$valid = false;
 	
@@ -494,6 +494,13 @@ class TrainingController extends Controller
 		    $error = new FormError("Musisz podać co najmniej jeden wynik, każdy musi być większy od 0");
 		    $form->get('distance')->addError($error);
 	    }
+	    
+	if(is_null($tag)){
+	    $error = new FormError("Musisz wybrać tag");
+	    $form->get('Tag')->addError($error);
+	    
+	    $valid = false;
+	}
 	
 	return $form->isValid() && $valid;
     }
