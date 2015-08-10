@@ -230,3 +230,18 @@ label[for=wykopbundle_training_ad]{
 select {
   width: 100%;
 }
+
+.content::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;     
+    opacity: 0.2;
+    z-index: -1;
+}

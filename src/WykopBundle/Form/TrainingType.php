@@ -79,7 +79,8 @@ class TrainingType extends AbstractType
 		'class' => 'WykopBundle:Tag',
 		'data' => $this->default_tag,
 		'attr' => array(
-		    'oninvalid' => 'InvalidMsg(this);'
+		    'oninvalid' => 'InvalidMsg(this);',
+		    'onChange' => 'changeBackground()'
 		    )
 		))
             ->add('City', 'entity', array(

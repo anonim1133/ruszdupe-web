@@ -29,6 +29,8 @@ jQuery(document).ready(function() {
     //Add first distance
     if($('form input[id^=wykopbundle_training_distance]').length == 0)
 	addDistanceForm($collectionHolder, $newLinkLi);
+	
+    document.styleSheets[0].addRule('.content::after','background-image: url(\'/assets/img/' + $('select#wykopbundle_training_Tag option:selected').text() + '.jpg\')');
 });
 
 function InvalidMsg(textbox) {
@@ -99,8 +101,9 @@ function addDistanceForm($collectionHolder, $newLinkLi) {
     $newLinkLi.before($newFormLi);
 }
 
-
-
+function changeBackground(){
+    document.styleSheets[0].addRule('.content::after','background-image: url(\'/assets/img/' + $('select#wykopbundle_training_Tag option:selected').text() + '.jpg\')');
+}
 
 function embed(){
 	$("a#dodajObrazUrl").after('<input name="embedUrl" type="text" class="pole" placeholder="Podaj url">');
