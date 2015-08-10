@@ -223,14 +223,14 @@ class TrainingController extends Controller
 		}
 	    }
 	    
-	    $entry_content .= '#' . $entity->getTag()->getName() . "\n\n";
+	    $entry_content .= '#' . $entity->getTag()->getName() . " ";
 	    
 	    $city = $entity->getCity();
 	    if(!is_null($city))
-		$entry_content .= '#rusz' . $city->getName() . "\n\n";
+		$entry_content .= '#rusz' . $city->getName();
 
 	    if($entity->getAd() == true){
-		$entry_content .= 'Skrypt dodany za pomocą [tego skryptu]('. $this->container->getParameter('app_url') .')'
+		$entry_content .= "\n\n" . 'Skrypt dodany za pomocą [tego skryptu]('. $this->container->getParameter('app_url') .')'
 			. "\n" . '!Najlepszy, bo darmowy'
 			. "\n" . '!Jest do wszystkiego więc... Jest dobry!'
 			. "\n" . '!Samo liczy, to chyba magia'
@@ -243,6 +243,12 @@ class TrainingController extends Controller
 	    $token = $this->get('security.token_storage')->getToken();
 	    
 	    $training->setNameUser($token->getUsername());
+	    
+	    if($token->getAttribute('wykop_sex') == 'male' && $token->getAttribute('wykop_sex') == 'female')
+		$training->setSexUser($token->getAttribute('wykop_sex'));
+	    else
+		$training->setSexUser(null);
+	    
 	    $training->setDetails($entry_content);
 	    
 	    //Subtract distances, build operation
@@ -253,15 +259,13 @@ class TrainingController extends Controller
 	    $wykop->setUserKey($token->getCredentials());
 	    $result = $wykop->doRequest('entries/add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
 
-	    //If Success then redirect to Index(or training_show?)
-	    //elseif forwardTo Index -> with all data from form
 	    if($wykop->isValid()){
 		$em->persist($training);
 		$em->flush();
 		return $this->redirect('http://wykop.pl/wpis/'. (int)$result['id']);
-		//return $this->redirect($this->generateUrl('training_show', array('id' => $training->getId())));
 	    }else{
-		throw new \Exception($this->getError());//Instead of throwing exception pass error to view(through session flash bag?)
+		$error = new FormError('Wykop: ' . $wykop->getError());
+		$form->addError($error);
 	    }
 	}
 

@@ -48,6 +48,14 @@ class Training
 
     /**
      * @var string
+     * 
+     * @ORM\Column(name="sex_user", type="string", nullable=true, length=8)
+     */
+    
+    private $sexUser;
+    
+    /**
+     * @var string
      *
      * @ORM\Column(name="name_user", type="string", length=255)
      */
@@ -201,6 +209,29 @@ class Training
     public function getNameUser()
     {
         return $this->nameUser;
+    }
+    
+    /**
+     * Set sexUser
+     *
+     * @param string $sexUser
+     * @return Training
+     */
+    public function setSexUser($sexUser)
+    {
+        $this->sexUser = $sexUser;
+
+        return $this;
+    }
+
+    /**
+     * Get sexUser
+     *
+     * @return string 
+     */
+    public function getSexUser()
+    {
+        return $this->sexUser;
     }
 
     /**

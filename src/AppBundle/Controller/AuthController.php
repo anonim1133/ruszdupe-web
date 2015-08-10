@@ -49,6 +49,7 @@ class AuthController extends Controller
 		
 		$token = new UsernamePasswordToken($profile['login'], $answer['userkey'], 'wykop', $roles);
 		$token->setAttribute('wykop_login', $profile['login']);
+		$token->setAttribute('wykop_sex', $profile['sex']);
 		$token->setAttribute('wykop_group', $profile['author_group']);
 		$token->setAttribute('wykop_avatar', $profile['avatar_med']);
 		$token->setAttribute('wykop_login_date', new \DateTime('now'));
