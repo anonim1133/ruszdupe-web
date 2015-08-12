@@ -46,6 +46,7 @@ class IndexController extends Controller
 //	dump($training_details->get('https://www.endomondo.com/users/10391720/workouts/343135237'));
 //	dump($training_details->get('https://www.endomondo.com/workouts/571529785/9982639'));
 //	dump($training_details->get('http://www.strava.com/activities/56519726'));
+//	dump($training_details->get('https://www.strava.com/activities/366647526'));
 	
 	
 	

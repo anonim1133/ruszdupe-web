@@ -53,8 +53,8 @@ class getTrainingDetails{
 	    $this->_training['duration'] = round($training->elapsed_time);
 	    $this->_training['distance'] = $training->distance/1000;
 	    $this->_training['calories'] = round($training->kilojoules*02.388458966);
-	    $this->_training['speed_avg'] = $training->average_speed;
-	    $this->_training['speed_max'] = $training->max_speed;
+	    $this->_training['speed_avg'] = $training->average_speed*3.6;
+	    $this->_training['speed_max'] = $training->max_speed*3.6;
 	    if(isset($training->average_heartrate))
 		$this->_training['heart_rate_avg'] = $training->average_heartrate;
 	    if(isset($training->max_heartrate))
