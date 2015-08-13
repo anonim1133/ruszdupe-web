@@ -202,7 +202,7 @@ class TrainingController extends Controller
 
 			$tmp = $tmp - floor($tmp);
 
-			$tempo .= floor(($tmp)*60);
+			$tempo .= str_pad(floor(($tmp)*60), 2, "0", STR_PAD_LEFT);
 
 
 

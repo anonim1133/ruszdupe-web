@@ -47,11 +47,24 @@ class IndexController extends Controller
 //	dump($training_details->get('https://www.endomondo.com/workouts/571529785/9982639'));
 //	dump($training_details->get('http://www.strava.com/activities/56519726'));
 //	dump($training_details->get('https://www.strava.com/activities/366647526'));
+	dump($stats = $training_details->get('https://www.strava.com/activities/367419855'));
+	
+	$tmp = 60/(float)$stats['speed_avg'];
+	$tempo = floor($tmp) . ':';
+
+	$tmp = $tmp - floor($tmp);
+
+	$tempo .= str_pad(floor(($tmp)*60), 2, "0", STR_PAD_LEFT);
+
+
+
+	dump('Średnie tempo: ' . $tempo . " min/km\n");
+
 	
 	
 	
 	$lastDistance = $this->get('LastDistance');
-	dump($lastDistance->get('#kochamgory'));
+	dump($lastDistance->get('#rowerowyrownik'));
         
        
         
