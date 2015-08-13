@@ -63,10 +63,18 @@ class TrainingController extends Controller
 	    
 	    //Get last distance
 	    $lastDistance = $this->get('LastDistance');
-	    $lastDistance = $lastDistance->get($entity->getTag()->getName());
 	    
-	    $lastDistance = preg_replace('/[^\.\,0-9]+/', '', $lastDistance);
-	    $lastDistance = preg_replace('/[\,]+/', '.', $lastDistance);
+	    try{
+		$lastDistance = $lastDistance->get($entity->getTag()->getName());
+	    }catch(\Exception $e){
+		$error = new FormError($e->getMessage());
+		$form->addError($error);
+		
+		return array(
+		    'entity' => $entity,
+		    'form'   => $form->createView(),
+		);
+	    }
 	    
 	    $operation = '';
 	    
