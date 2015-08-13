@@ -127,7 +127,7 @@ class Training
     {
         $this->tag = $Tag;
 	
-	setcookie('default_tag', (is_object($Tag))?$Tag->getId():0, time()+3600*24*32);
+	setcookie('default_tag', (is_object($Tag))?$Tag->getId():0, time()+2764800);
 
         return $this;
     }
@@ -151,6 +151,8 @@ class Training
     public function setCity($City)
     {
         $this->city = $City;
+	
+	setcookie('default_city', (is_object($City))?$City->getId():0, time()+2764800);
 
         return $this;
     }
@@ -333,10 +335,11 @@ class Training
      */
     public function setAd($on){
 	$this->ad = $on;
-	if($on)
-	    setcookie('ad', 'true', time()+3600*24*32);
-	else
-	    setcookie('ad', 'false', time()+3600*24*32);
+	if($on){
+	    setcookie('ad', 'true', time()+2764800);
+	}else{
+	    setcookie('ad', 'false', time()+2764800);
+	}
 	
 	return $this;
     }

@@ -8,9 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrainingType extends AbstractType
 {    
-    public function __construct($default_tag = 0, $ad = false) {
+    public function __construct($ad = false, $default_tag = 0, $default_city = 0) {
 	
 	$this->default_tag = $default_tag;
+	$this->default_city = $default_city;
 	if($ad == 'true')
 	    $this->ad = true;
 	else
@@ -87,7 +88,8 @@ class TrainingType extends AbstractType
 		'required' => false, 
 		'label' => false, 
 		'placeholder' => 'Wybierz miasto',
-		'class' => 'WykopBundle:City'
+		'class' => 'WykopBundle:City',
+		'data' => $this->default_city,
 		))
             ->add('nameUser', 'hidden', array(
 		'label' => 'Login'
