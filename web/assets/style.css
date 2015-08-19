@@ -227,7 +227,7 @@ label[for=wykopbundle_training_ad]{
     top: -12px;
 }
 
-select {
+select#wykopbundle_training_Tag, select#wykopbundle_training_City {
   width: 100%;
 }
 
