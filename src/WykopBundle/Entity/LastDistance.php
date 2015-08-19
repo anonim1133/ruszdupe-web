@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * LastDistance
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="WykopBundle\Entity\LastDistanceRepository")
  */
 class LastDistance
 {
