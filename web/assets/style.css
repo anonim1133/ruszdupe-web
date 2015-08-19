@@ -71,7 +71,11 @@ body {
   float:right;
 }
 .img-avatar:hover{
+<<<<<<< HEAD
 	background-image: url("assets/img/wyloguj.jpg")!important;
+=======
+	background-image: url("/assets/img/wyloguj.jpg")!important;
+>>>>>>> 8a243c46b403294115cd0fd0f42322d5e9484a10
 }
 .content {
 	padding: 20px;
@@ -227,7 +231,7 @@ label[for=wykopbundle_training_ad]{
     top: -12px;
 }
 
-select {
+select#wykopbundle_training_Tag, select#wykopbundle_training_City {
   width: 100%;
 }
 
