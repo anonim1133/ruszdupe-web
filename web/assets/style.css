@@ -71,7 +71,7 @@ body {
   float:right;
 }
 .img-avatar:hover{
-	background-image: url("assets/wyloguj.jpg")!important;
+	background-image: url("assets/img/wyloguj.jpg")!important;
 }
 .content {
 	padding: 20px;
