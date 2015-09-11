@@ -18,35 +18,39 @@ class LastDistance{
 	
 
         if($this->_api->isValid()){
-	    if(isset($result['items'][0])){
-		if(preg_match('/=(.+)/', $result['items'][0]['body'], $result) == 0)
-		    throw new \Exception('Brak działania pod ostatnim wpisem z tagiem #'.$tag);
+	    if(isset($result['items']) && is_array($result['items']) && count($result['items'])){
+		foreach($result['items'] as $entry){
+		    if(!preg_match('/=(.+)/', $entry['body'], $result))
+			continue;
 		
-		$result = $result[1];
+		    $result = $result[1];
 
-		$result = preg_replace('/[^\.\,0-9]+/', '', $result);
-		$result = preg_replace('/[\,]+/', '.', $result);
+		    $result = preg_replace('/[^\.\,0-9]+/', '', $result);
+		    $result = preg_replace('/[\,]+/', '.', $result);
 
-		if($result > 0){
-		    $last_distance = new \WykopBundle\Entity\LastDistance();
+		    if($result > 0){
+			$last_distance = new \WykopBundle\Entity\LastDistance();
 
-		    $last_distance->setDistance($result);
-		    $last_distance->setDate(new \DateTime('now'));
+			$last_distance->setDistance($result);
+			$last_distance->setDate(new \DateTime('now'));
 
-		    $tag_r = $this->_em->getRepository('WykopBundle:Tag');
-		    $tag = $tag_r->findOneByName($tag);
+			$tag_r = $this->_em->getRepository('WykopBundle:Tag');
+			$tag = $tag_r->findOneByName($tag);
 
-		    $last_distance->setTag($tag);
+			$last_distance->setTag($tag);
 
-		    $this->_em->persist($last_distance);
-		    $this->_em->flush();
+			$this->_em->persist($last_distance);
+			$this->_em->flush();
+		    }
+
+		    $result = preg_replace('/[^\.\,0-9]+/', '', $result);
+		    $result = preg_replace('/[\,]+/', '.', $result);
+
+		    return $result;
 		}
+	    }
 
-		$result = preg_replace('/[^\.\,0-9]+/', '', $result);
-		$result = preg_replace('/[\,]+/', '.', $result);
-		
-		return $result;
-	    }else throw new \Exception('Brak ostatniego dystansu');
+	    throw new \Exception('Brak ostatniego dystansu');
         }else{
 	    throw new \Exception('Wykop mówi: ' . $this->_api->getError());
         }
