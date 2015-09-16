@@ -50,7 +50,7 @@ class getTrainingDetails{
 	    $this->_training['url'] = $this->_url;
 	    
 	    $this->_training['start_time'] = $training->start_date;
-	    $this->_training['duration'] = round($training->elapsed_time);
+	    $this->_training['duration'] = round($training->moving_time);
 	    $this->_training['distance'] = $training->distance/1000;
 	    $this->_training['calories'] = round($training->kilojoules*02.388458966);
 	    $this->_training['speed_avg'] = $training->average_speed*3.6;

@@ -219,7 +219,7 @@ class TrainingController extends Controller
 		    }
 
 		    if(isset($stats['calories']))
-			$entry_content .= 'Kalorie: ' . $stats['calories'] . " cal\n";
+			$entry_content .= 'Kalorie: ' . $stats['calories'] . " kcal\n";
 
 		    if(isset($stats['heart_rate_avg']))
 			$entry_content .= 'Średni puls: ❤' . $stats['heart_rate_avg'] . "bpm\n";
@@ -230,6 +230,9 @@ class TrainingController extends Controller
 		    $entry_content .= "\n";
 		}
 	    }
+	    
+	    $userStats = $this->get('UserStats');
+	    $userStats = $userStats->get($entity->getNameUser());
 	    
 	    $entry_content .= '#' . $entity->getTag()->getName() . " ";
 	    
