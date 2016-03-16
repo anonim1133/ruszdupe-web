@@ -6,7 +6,7 @@ parameters:
 services:
     getTrainingDetails:
         class:  TrainingSourceBundle\Service\getTrainingDetails
-        arguments: 
+        arguments:
             Enodmondo: @getEndomondoDetails
             Strava: @getStravaDetails
             RunKeeper: @getRunKeeperDetails
@@ -18,3 +18,7 @@ services:
             AccessToken: %strava_secret%
     getRunKeeperDetails:
         class:  TrainingSourceBundle\Service\getRunKeeperDetails
+    UserStats:
+        class: TrainingSourceBundle\Service\UserStats
+        arguments:
+            entityManager: @doctrine.orm.entity_manager

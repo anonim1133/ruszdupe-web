@@ -234,9 +234,16 @@ class TrainingController extends Controller {
 		    $entry_content .= "\n";
 		}
 	    }
-//
-//	    $userStats = $this->get('UserStats');
-//	    $userStats = $userStats->get($entity->getNameUser());
+
+	    //Set username from session
+	    $token = $this->get('security.token_storage')->getToken();
+
+	    $userStats = $this->get('UserStats');
+	    $stats = $userStats->get($token->getUsername(), $entity->getTag()->getId());
+
+	    if( !empty($stats) && $training->getTag()->getId() === 1 ) {
+		$entry_content .= PHP_EOL . 'W tym tygodniu zrobiłem już ' . $stats['sum'] . 'km!' . PHP_EOL;
+	    }
 
 	    $entry_content .= '#' . $entity->getTag()->getName() . " ";
 
@@ -254,12 +261,9 @@ class TrainingController extends Controller {
 			. "\n" . '!Powiedzcie mamie, powiedzcie babci, niech odejmują!';
 	    }
 
-	    //Set username from session
-	    $token = $this->get('security.token_storage')->getToken();
-
 	    $training->setNameUser($token->getUsername());
 
-	    if( $token->getAttribute('wykop_sex') == 'male' && $token->getAttribute('wykop_sex') == 'female' )
+	    if( $token->getAttribute('wykop_sex') == 'male' || $token->getAttribute('wykop_sex') == 'female' )
 		$training->setSexUser($token->getAttribute('wykop_sex'));
 	    else
 		$training->setSexUser(null);

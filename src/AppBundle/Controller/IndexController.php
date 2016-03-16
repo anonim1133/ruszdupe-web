@@ -40,20 +40,20 @@ class IndexController extends Controller {
      */
     public function testAction() {
 
-	$training_details = $this->get('getTrainingDetails');
-
-
+//	$training_details = $this->get('getTrainingDetails');
 //	dump($training_details->get('https://www.endomondo.com/users/10391720/workouts/343135237'));
 //	dump($training_details->get('https://www.endomondo.com/workouts/571529785/9982639'));
 //	dump($training_details->get('http://www.strava.com/activities/56519726'));
 //	dump($training_details->get('https://www.strava.com/activities/366647526'));
 	//dump($stats = $training_details->get('https://www.strava.com/activities/367419855'));
-	dump($training_details->get('https://www.endomondo.com/users/5475644/workouts/662376598'));
+//	dump($training_details->get('https://www.endomondo.com/users/5475644/workouts/662376598'));
+//
+//	$lastDistance = $this->get('LastDistance');
+//	dump($lastDistance->get('#rowerowyrownik'));
 
-	$lastDistance = $this->get('LastDistance');
-	dump($lastDistance->get('#rowerowyrownik'));
 
-
+	$stats = $this->get('UserStats');
+	dump($stats->get('anonim1133', '1'));
 
 	return array();
     }
