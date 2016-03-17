@@ -91,6 +91,8 @@ class TrainingController extends Controller {
 	    $entry_content = '';
 	    $entry_stats = array();
 
+	    $km_tags = '';
+
 	    //Deal with multiple trainings in one form
 	    foreach ($distances as $index => $dist) {
 		$distance = new Distance();
@@ -167,6 +169,12 @@ class TrainingController extends Controller {
 
 		$em->persist($distance);
 		$training->setDistance($distance);
+
+		$i = 1;
+		while ($tag = (floor($value_distance / ($i * 100)))) {
+		    $km_tags .= '#' . ($i * 100) . 'km ';
+		    $i++;
+		}
 	    }
 
 	    $operation = preg_replace('/- $/', '= ', $operation);
@@ -250,6 +258,10 @@ class TrainingController extends Controller {
 	    $city = $entity->getCity();
 	    if( !is_null($city) )
 		$entry_content .= '#rusz' . $city->getName();
+
+	    if( $entity->getTag()->getName() == 'rowerowyrownik' ) {
+		$entry_content .= ' ' . $km_tags;
+	    }
 
 	    if( $entity->getAd() == true ) {
 		$entry_content .= "\n\n" . 'Wpis dodany za pomocą [tego skryptu](' . $this->container->getParameter('app_url') . ')'
