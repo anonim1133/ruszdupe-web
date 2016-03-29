@@ -90,6 +90,7 @@ class TrainingController extends Controller {
 	    $is_stats = false;
 	    $entry_content = '';
 	    $entry_stats = array();
+	    $distanceSum = 0;
 
 	    $km_tags = '';
 
@@ -105,7 +106,7 @@ class TrainingController extends Controller {
 		    $distance->setLink($dist);
 		}
 
-		if( $training->getTag()->getName() === 'plywajzwykopem' )
+		if( $training->getTag()->getName() === 'plywajzwykopem' && ($training_details['distance'] < 100) )
 		    $value_distance = $training_details['distance'] * 1000;
 		else
 		    $value_distance = $training_details['distance'];
@@ -117,9 +118,11 @@ class TrainingController extends Controller {
 		if( $training->getTag()->getRound() ) {
 		    $value_distance = round($value_distance);
 		    $operation .= $value_distance . ' - ';
+		    $distanceSum += $value_distance;
 		} else {
 		    $value_distance = number_format((float) $value_distance, 2, '.', '');
 		    $operation .= number_format((float) $value_distance, 2, ',', '') . ' - ';
+		    $distanceSum += $value_distance;
 		}
 
 		$distance->setDistance($value_distance);
@@ -250,7 +253,7 @@ class TrainingController extends Controller {
 	    $stats = $userStats->get($token->getUsername(), $entity->getTag()->getId());
 
 	    if( !empty($stats) && $training->getTag()->getId() === 1 ) {
-		$entry_content .= PHP_EOL . 'W tym tygodniu zrobiłem już ' . $stats['sum'] . 'km!' . PHP_EOL;
+		$entry_content .= PHP_EOL . 'W tym tygodniu to już ' . ($stats['sum'] + $distanceSum) . 'km!' . PHP_EOL;
 	    }
 
 	    $entry_content .= '#' . $entity->getTag()->getName() . " ";
