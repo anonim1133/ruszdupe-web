@@ -202,7 +202,7 @@ class TrainingController extends Controller {
 		    if( isset($stats['distance']) && $training->getTag()->getName() === 'plywajzwykopem' )
 			$entry_content .= 'Dystans: ' . $stats['distance'] . " m\n";
 		    elseif( isset($stats['distance']) )
-			$entry_content .= 'Dystans: ' . $stats['distance'] . " m\n";
+			$entry_content .= 'Dystans: ' . $stats['distance'] . " km\n";
 
 		    if( isset($stats['vertical']) )
 			$entry_content .= 'Wertykalnie: ' . $stats['vertical'] . "\n";
