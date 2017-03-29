@@ -34,8 +34,9 @@ class UserStats {
 	JOIN distance ON training_distance.distance_id = distance.id
 	WHERE
 	    name_user = :username AND
-	    EXTRACT(WEEK FROM date_add) = EXTRACT(WEEK FROM NOW())
-	    AND id_tag = :tag';
+	    EXTRACT(WEEK FROM date_add) = EXTRACT(WEEK FROM NOW()) AND
+        EXTRACT(YEAR FROM date_add) = EXTRACT(YEAR FROM NOW()) AND 
+        id_tag = :tag';
 
 	$stmt = $this->entityManager->getConnection()->prepare($sql);
 	$stmt->bindParam('username', $username);
