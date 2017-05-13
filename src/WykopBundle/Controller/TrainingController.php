@@ -347,14 +347,18 @@ class TrainingController extends Controller {
 	if( !is_null($request->cookies->get('default_tag')) ) {
 	    $em = $this->getDoctrine()->getManager();
 	    $default_tag = $em->getReference("WykopBundle:Tag", $request->cookies->get('default_tag'));
-	}
+	}else{
+        $default_tag = (int)$request->query->get('tag', 0);
+    }
 
 	$default_city = 0;
 
 	if( !is_null($request->cookies->get('default_city')) ) {
 	    $em = $this->getDoctrine()->getManager();
 	    $default_city = $em->getReference("WykopBundle:City", $request->cookies->get('default_city'));
-	}
+	}else{
+        $default_city = (int)$request->query->get('city', 0);
+    }
 
 	$ad = 'false';
 
