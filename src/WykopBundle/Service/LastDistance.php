@@ -14,12 +14,12 @@ class LastDistance{
     
     function get($tag){
 	$tag = ltrim($tag, '#'); // Delete redundant # from tag
-        $result = $this->_api->doRequest('tag/entries/'.$tag);
+        $result = $this->_api->doRequest('Tags/Entries/'.$tag);
 	
 
         if($this->_api->isValid()){
-	    if(isset($result['items']) && is_array($result['items']) && count($result['items'])){
-		foreach($result['items'] as $entry){
+	    if(isset($result['data']) && is_array($result['data']) && count($result['data'])){
+		foreach($result['data'] as $entry){
 		    if(!preg_match('/=(.+)/', $entry['body'], $result))
 			continue;
 		
