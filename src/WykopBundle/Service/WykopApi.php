@@ -18,7 +18,7 @@ class WykopApi{
 	*/
 
 	protected $userAgent = 'RuszDupe';
-	protected $apiDomain = 'http://a2.wykop.pl/';
+	protected $apiDomain = 'https://a2.wykop.pl/';
 	protected $key = null;
 	protected $secret = null;
 	protected $userKey = null;
