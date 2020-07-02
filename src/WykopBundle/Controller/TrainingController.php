@@ -290,7 +290,16 @@ class TrainingController extends Controller {
 	    //Send new entry to Wykop
 	    $wykop = $this->get('WykopApi');
 	    $wykop->setUserKey($token->getCredentials());
-	    $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
+
+        if($_FILES['wykopbundle_training'] === null) {
+            $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
+        } else {
+            $tmpfile = realpath($_FILES['wykopbundle_training']['tmp_name']['embed_img']);
+            $filename = basename($_FILES['wykopbundle_training']['name']['embed_img']);
+            $img_type = $_FILES['wykopbundle_training']['type']['embed_img'];
+            $embed = curl_file_create($tmpfile, $img_type, $filename);
+            $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content), array('embed' => $embed));
+        }
 
 	    if( $wykop->isValid() ) {
 		$em->persist($training);

@@ -84,6 +84,11 @@ class Training
      * @var string
      */
     private $embed;
+
+    /**
+     * @var string
+     */
+    private $embed_img;
     
     /**
      * @var boolean
@@ -91,20 +96,20 @@ class Training
     private $ad;
     
     public function __construct(){
-	$date = new \DateTime();
-	$minutes = $date->format('i');
-	if($minutes > 0){
-	    //$date->modify("+- hour");
-	    $date->modify('-'.$minutes.' minutes');
-	}
+    $date = new \DateTime();
+    $minutes = $date->format('i');
+    if($minutes > 0){
+        //$date->modify("+- hour");
+        $date->modify('-'.$minutes.' minutes');
+    }
 
     
         $this->date = $date;
-	
-	$this->date_add = new \DateTime();
-	
-	$this->distance = new ArrayCollection();
-	$this->dates = new ArrayCollection();
+    
+    $this->date_add = new \DateTime();
+    
+    $this->distance = new ArrayCollection();
+    $this->dates = new ArrayCollection();
     }
     
     /**
@@ -126,8 +131,8 @@ class Training
     public function setTag($Tag)
     {
         $this->tag = $Tag;
-	
-	setcookie('default_tag', (is_object($Tag))?$Tag->getId():0, time()+2764800);
+    
+    setcookie('default_tag', (is_object($Tag))?$Tag->getId():0, time()+2764800);
 
         return $this;
     }
@@ -151,8 +156,8 @@ class Training
     public function setCity($City)
     {
         $this->city = $City;
-	
-	setcookie('default_city', (is_object($City))?$City->getId():0, time()+2764800);
+    
+    setcookie('default_city', (is_object($City))?$City->getId():0, time()+2764800);
 
         return $this;
     }
@@ -329,19 +334,42 @@ class Training
     }
     
     /**
+     * Set embed_img
+     *
+     * @param string $embed_img
+     * @return Training
+     */
+    public function setEmbedImg($embed_img)
+    {
+        $this->embed_img = $embed_img;
+
+        return $this;
+    }
+
+    /**
+     * Get embed_img
+     *
+     * @return string 
+     */
+    public function getEmbedImg()
+    {
+        return $this->embed_img;
+    }
+
+    /**
      * Set ad
      * 
      * @return Training
      */
     public function setAd($on){
-	$this->ad = $on;
-	if($on){
-	    setcookie('ad', 'true', time()+2764800);
-	}else{
-	    setcookie('ad', 'false', time()+2764800);
-	}
-	
-	return $this;
+    $this->ad = $on;
+    if($on){
+        setcookie('ad', 'true', time()+2764800);
+    }else{
+        setcookie('ad', 'false', time()+2764800);
+    }
+    
+    return $this;
     }
     
     /**
@@ -350,6 +378,6 @@ class Training
      * @return boolean
      */
     public function getAd(){
-	return $this->ad;
+    return $this->ad;
     }
 }
