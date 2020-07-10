@@ -381,7 +381,7 @@ class WykopApi{
 
 				CURLOPT_MAXREDIRS          => 10,
 
-				CURLOPT_HTTPHEADER          => array('apisign:' . (is_string($post['embed']) ? $this->sign($url, $post) : $this->sign($url, array($post['body']))))
+				CURLOPT_HTTPHEADER          => array('apisign:' . (!isset($post['embed']) ? $this->sign($url, $post) : is_string($post['embed']) ? $this->sign($url, $post) : $this->sign($url, array($post['body']))))
 
 		);
 
