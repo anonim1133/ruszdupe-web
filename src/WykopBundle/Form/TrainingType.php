@@ -132,6 +132,10 @@ class TrainingType extends AbstractType
 		    'placeholder' => 'Link do obrazu który chcesz dołączyć do wpisu'
 		    )
 	    ))
+	    ->add('embed_img', 'file', array(
+		'required' => false,
+		'label' => 'Obraz który chcesz dołączyć do wpisu (zamiast po linku)'
+	    ))
 	    ->add('ad', 'checkbox', array(
 		'required' => false,
 		'label' => 'Reklama na mikroblogu?',

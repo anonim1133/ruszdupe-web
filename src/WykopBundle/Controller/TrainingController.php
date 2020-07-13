@@ -290,22 +290,31 @@ class TrainingController extends Controller {
 	    //Send new entry to Wykop
 	    $wykop = $this->get('WykopApi');
 	    $wykop->setUserKey($token->getCredentials());
-	    $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
 
-	    if( $wykop->isValid() ) {
-		$em->persist($training);
-		$em->flush();
-		return $this->redirect('https://wykop.pl/wpis/' . (int) $result['data']['id']);
-	    } else {
-		$error = new FormError('Wykop: ' . $wykop->getError());
-		$form->addError($error);
-	    }
-	}
-
-	return array(
-	    'entity' => $entity,
-	    'form' => $form->createView(),
-	);
+        if($_FILES['wykopbundle_training'] === null) {
+            $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
+        } else {
+            $allowed = array("image/jpeg", "image/jpg", "image/png", "image/gif");
+            $file_type = $_FILES['wykopbundle_training']['type']['embed_img'];
+            if (in_array($file_type, $allowed)) {
+                $tmpfile = realpath($_FILES['wykopbundle_training']['tmp_name']['embed_img']);
+                $filename = basename($_FILES['wykopbundle_training']['name']['embed_img']);
+                $embed = curl_file_create($tmpfile, $file_type, $filename);
+                $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content), array('embed' => $embed));
+                        
+                if( $wykop->isValid() ) {
+                    $em->persist($training);
+                    $em->flush();
+                    return $this->redirect('https://wykop.pl/wpis/' . (int) $result['data']['id']);
+                } else {
+                    $error = new FormError('Wykop: ' . $wykop->getError());
+                    $form->addError($error);
+                }
+            } else {
+                $error = new FormError('Upps! Możesz wrzucać tylko obrazki! (JPG JPEG PNG GIF)');
+                $form->addError($error);
+            }
+        }
     }
 
     /**
