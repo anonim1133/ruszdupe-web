@@ -291,8 +291,17 @@ class TrainingController extends Controller {
 	    $wykop = $this->get('WykopApi');
 	    $wykop->setUserKey($token->getCredentials());
 
-        if($_FILES['wykopbundle_training'] === null) {
+        if($_FILES['wykopbundle_training']['size']['embed_img'] == 0) {
             $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
+
+            if( $wykop->isValid() ) {
+                $em->persist($training);
+                $em->flush();
+                return $this->redirect('https://wykop.pl/wpis/' . (int) $result['data']['id']);
+            } else {
+                $error = new FormError('Wykop: ' . $wykop->getError());
+                $form->addError($error);
+            }
         } else {
             $allowed = array("image/jpeg", "image/jpg", "image/png", "image/gif");
             $file_type = $_FILES['wykopbundle_training']['type']['embed_img'];
