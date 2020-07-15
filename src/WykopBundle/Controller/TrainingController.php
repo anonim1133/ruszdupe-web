@@ -291,7 +291,7 @@ class TrainingController extends Controller {
 	    $wykop = $this->get('WykopApi');
 	    $wykop->setUserKey($token->getCredentials());
 
-        if($_FILES['wykopbundle_training']['size']['embed_img'] == 0) {
+        if($_FILES['wykopbundle_training']['size']['embed_img'] == 0 or $_FILES['wykopbundle_training'] === null) {
             $result = $wykop->doRequest('Entries/Add', array('body' => $entry_content, 'embed' => $entity->getEmbed()));
 
             if( $wykop->isValid() ) {
